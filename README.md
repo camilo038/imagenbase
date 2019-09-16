@@ -4,10 +4,12 @@ Imagen  Base
 ### Instalar
 mvn clean install
 
-### Crear configmap y  secrets
-#Secretos
+### Crear  secrets
+
 oc create  -f   secret.yml
-#Confimap propepiedades
+
+### Crear  Propiedades
+
 oc create configmap ws-insertar-movimiento --from-literal=quickstart.usuariodb=postgres --from-literal=quickstart.passwddb=wana1200
 
 ### Desplegar en  OpenShift
