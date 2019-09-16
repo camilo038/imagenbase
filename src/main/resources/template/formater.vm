@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+xmlns:fi="http://xmlns.oracle.com/Enterprise/Tools/schemas/FI_IMPORT_FL_XML_RES.V1">
+<SOAP-ENV:Header/>
+<SOAP-ENV:Body>
+<fi:FI_IMPORT_FL_XML_RES>
+<ID>${exchange.properties.mensajefusesoap}</ID>
+</fi:FI_IMPORT_FL_XML_RES>
+</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>  

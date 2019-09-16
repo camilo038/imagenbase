@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:cxf="http://camel.apache.org/schema/cxf"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring        http://camel.apache.org/schema/spring/camel-spring.xsd  http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf-2.8.3.xsd">
+    <bean class="org.slf4j.LoggerFactory" factory-method="getLogger" id="rh1">
+        <constructor-arg index="0" value="rh1"/>
+    </bean>
+    <cxf:cxfEndpoint address="/"
+        endpointName="a:TestWebServiceImplPort" id="CXFTest"
+        serviceClass="com.intelgy.services.TestWebService"
+        serviceName="a:TestWebServiceImplService"
+        wsdlURL="/wsdl/validador.wsdl" xmlns:a="http://services.intelgy.com/"/>
+    <camelContext id="camel" streamCache="true" threadNamePattern="100" xmlns="http://camel.apache.org/schema/spring">
+        <threadPoolProfile defaultProfile="true" id="changedProfile"
+            maxQueueSize="100" poolSize="3"/>
+        <route id="simple-route">
+            <!--             <from id="route-timer" uri="timer://foo?period=1000"/> -->
+            <from id="_from1" uri="cxf:bean:CXFTest?dataFormat=MESSAGE"/>
+            <setProperty id="mensajefusesoap" propertyName="mensajefusesoap">
+                <xpath resultType="String">//testInput/mensajefusesoap/text()</xpath>
+            </setProperty>
+            <log id="_log1" loggerRef="rh1" loggingLevel="INFO" message="Log slf4j::Inicio JMS:::::${property.mensajefusesoap}"/>
+            <to id="_to3" uri="direct:jmsenvio"/>
+        </route>
+        <route id="_route1">
+            <from id="_from2" uri="direct:soapproce"/>
+            <log id="_log3" loggerRef="rh1" loggingLevel="INFO" message="Log slf4j:::Envio proceso soap:::::${property.mensajefusesoap}"/>
+            <to id="_to1" uri="velocity:template/formater.vm"/>
+        </route>
+        <route id="_route2">
+            <from id="_from3" uri="direct:jmsenvio"/>
+            <setBody id="_setBody1">
+                <simple>intelgy</simple>
+            </setBody>
+            <log id="_log2" loggerRef="rh1" loggingLevel="INFO" message="Log slf4j:::Incio SOAP::::${property.mensajefuse}"/>
+            <to id="_to2" uri="direct:soapproce"/>
+        </route>
+    </camelContext>
+</beans>
