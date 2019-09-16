@@ -8,7 +8,7 @@ mvn clean install
 
 oc create  -f   secret.yml
 
-### Crear  Propiedades
+### Crear  Propiedades***********Por favor verfifique los valos correspodientes a su ambiente 
 
 oc create configmap ws-insertar-movimiento --from-literal=quickstart.usuariodb=postgres --from-literal=quickstart.passwddb=wana1200
 
